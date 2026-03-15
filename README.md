@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# Git Enterprise Strategies
+(｡･ω･)ﾉ
+a hands-on assignment that simulates real-world Git workflows in an enterprise environment, covering branching, stashing, rebasing, resolving merge conflicts, and creating release tags
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## overview
 
-## Available Scripts
+for this assignment, I played the role of a software engineer at a large company with a production deployment coming up. my goal was to push code changes to my team's GitHub repository while following the project's [contribution guidelines](CONTRIBUTING.md)
 
-In the project directory, you can run:
+## workflow
 
-### `npm start`
+1. pulled the latest changes and checked out the `helloWorld` branch
+2. updated my name in `src/App.js`
+3. stashed my changes with `git stash`, switched to `main` to verify the stash, then popped them back on `helloWorld`
+4. committed my changes and bumped the app version with `npm version 1.0.0`
+5. pushed my commits and opened a PR from `helloWorld` → `main`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### resolving merge conflicts
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+real-world enterprise scenario: a teammate forgot to merge their branch (`newText`) before the release, so I had to get it into `main`
 
-### `npm test`
+1. raised a PR from `newText` → `main`, which had conflicts in `App.js` since both branches touched that file
+2. rebased `newText` onto `main` and resolved the conflicts in my IDE by accepting the incoming changes
+3. force pushed and merged the PR
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### version bump and release
 
-### `npm run build`
+1. checked out a new branch, ran `npm version 1.0.1`, and merged it into `main`
+2. created a GitHub release with tag `v1.0.1` off `main`, matching the version in `package.json`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## key takeaways
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **stashing**: saves uncommitted work so you can safely switch branches
+- **rebasing**: keeps commit history clean by adding your changes on top of the latest code
+- **force pushing**: required after a rebase if the branch was already pushed remotely, but should be used carefully
+- **tagging releases**: creates a reliable snapshot of the code to deploy or roll back in production
